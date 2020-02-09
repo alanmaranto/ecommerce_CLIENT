@@ -1,9 +1,10 @@
-import React from 'react';
+import React from "react";
+import Layout from '../../core/Layout/Layout';
 
-const Dashboard = () => {
-    return ( 
-        <div>Home</div>
-     );
-}
- 
+const Dashboard = () => (
+  <Layout title="Dashboard" description=" Node React E-Commerce">
+    ...
+  </Layout>
+);
+
 export default Dashboard;
