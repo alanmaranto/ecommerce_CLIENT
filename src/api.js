@@ -11,8 +11,8 @@ const postHeader = {
 const api = {
   host,
   auth: {
-    postUser(data){
-      const url = `${host}/signup`;
+    postUser(data) {
+      const url = `${host}/user/signup`;
       postHeader.body = JSON.stringify(data);
       return fetch(url, postHeader);
     }
