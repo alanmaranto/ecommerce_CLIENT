@@ -1,22 +1,37 @@
 const host = process.env.REACT_APP_API_URL || "localhost:8000";
 
-const postHeader = {
-  method: "POST",
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json"
-  }
+// Auth
+
+export const signup = user => {
+  return fetch(`${host}/signup`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(user)
+  })
+    .then(response => {
+      return response.json();
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
-const api = {
-  host,
-  auth: {
-    postUser(data){
-      const url = `${host}/signup`;
-      postHeader.body = JSON.stringify(data);
-      return fetch(url, postHeader);
-    }
-  }
+export const signin = user => {
+  return fetch(`${host}/signin`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(user)
+  })
+    .then(response => {
+      return response.json();
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
-
-export default api;
