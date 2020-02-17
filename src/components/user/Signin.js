@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Layout from "../../core/Layout/Layout";
 import { signin } from "../../api";
+import { authenticate } from '../../helpers/authenticate'
 
 const SignIn = () => {
   const [values, setValues] = useState({
@@ -9,34 +10,36 @@ const SignIn = () => {
     password: "",
     error: "",
     loading: false,
-    redirectToReferrer: false,
+    redirectToReferrer: false
   });
 
   const { email, password, loading, error, redirectToReferrer } = values;
 
   const handleChange = name => event => {
-    setValues({ 
-        ...values, 
-        error: false, 
-        [name]: event.target.value 
+    setValues({
+      ...values,
+      error: false,
+      [name]: event.target.value
     });
   };
 
   const clickSubmit = event => {
     event.preventDefault();
-    setValues({ ...values, error: false, loading: true, });
+    setValues({ ...values, error: false, loading: true });
     signin({ email, password }).then(data => {
       if (data.error) {
-          console.log('data', data)
-        setValues({ 
-            ...values, 
-            error: data.error, 
-            loading: false 
-        });
-      } else {
+        console.log("data", data);
         setValues({
           ...values,
-          redirectToReferrer: true
+          error: data.error,
+          loading: false
+        });
+      } else {
+        authenticate(data, () => {
+          setValues({
+            ...values,
+            redirectToReferrer: true
+          });
         });
       }
     });
@@ -44,7 +47,6 @@ const SignIn = () => {
 
   const signUpForm = () => (
     <form>
-
       <div className="form-group">
         <label className="text-muted">Email</label>
         <input
@@ -79,24 +81,23 @@ const SignIn = () => {
     </div>
   );
 
-  const showLoading = () => (
+  const showLoading = () =>
     loading && (
-        <div className="alert alert-info">
-            <h2>Loading...</h2>
-        </div>
-    )
-  );
+      <div className="alert alert-info">
+        <h2>Loading...</h2>
+      </div>
+    );
 
   const redirectUser = () => {
-      if (redirectToReferrer) {
-          return <Redirect to="/" />
-      }
-  }
+    if (redirectToReferrer) {
+      return <Redirect to="/" />;
+    }
+  };
 
   return (
     <Layout
-      title="Signup"
-      description="Signup to Node React E-commerce App"
+      title="Signin"
+      description="Signin to Node React E-commerce App"
       className="container col-md-8 offset-md-2"
     >
       {showLoading()}
