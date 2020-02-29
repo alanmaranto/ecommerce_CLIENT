@@ -88,3 +88,13 @@ export const createProduct = (userId, token, product) => {
       console.log(err);
     });
 };
+
+export const fetchCategories = () => {
+  return fetch(`${host}/categories`, {
+    method: "GET",
+  })
+  .then(response => {
+    return response.json()
+  })
+  .catch(err => console.log(err));
+}
