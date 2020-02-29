@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { signout, isAuthenticated } from "../../api";
+import { signout } from "../../api";
+import { isAuthenticated } from '../../helpers/authenticate'
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) {
