@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { createProduct } from "../../../api";
 
 const AddProduct = () => {
-  const { user, token } = isAuthenticated();
   const [values, setValues] = useState({
     name: "",
     description: "",
@@ -14,7 +13,7 @@ const AddProduct = () => {
     categories: [],
     category: "",
     shipping: "",
-    quantity: '',
+    quantity: "",
     photo: "",
     loading: false,
     error: "",
@@ -22,6 +21,8 @@ const AddProduct = () => {
     redirectToProfile: false,
     formData: ""
   });
+
+  const { user, token } = isAuthenticated();
 
   const {
     name,
@@ -31,7 +32,7 @@ const AddProduct = () => {
     category,
     shipping,
     quantity,
-    photo,
+    // photo,
     loading,
     error,
     createdProduct,
@@ -40,18 +41,37 @@ const AddProduct = () => {
   } = values;
 
   useEffect(() => {
-    setValues({ ...values, formData: new FormData()})
-  }, [])
+    setValues({ ...values, formData: new FormData() });
+  }, []);
 
   const onChange = name => e => {
     const value = name === "photo" ? e.target.files[0] : e.target.value;
-    formData.set(name, value)
+    formData.set(name, value);
     setValues({ ...values, [name]: value });
   };
 
   const onSubmit = e => {
-      //
-  }
+    e.preventDefault();
+    setValues({ ...values, error: "", loading: true });
+
+    createProduct(user._id, token, formData).then(data => {
+      if (data.error) {
+          console.log('dataerror', data.error)
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({
+          ...values,
+          name: "",
+          description: "",
+          photo: "",
+          price: "",
+          quantity: "",
+          loading: false,
+          createdProduct: data.name
+        });
+      }
+    });
+  };
 
   const newPostForm = () => (
     <form className="mb-3" onSubmit={onSubmit}>
@@ -99,7 +119,8 @@ const AddProduct = () => {
       <div className="form-group">
         <label className="text-muted">Category</label>
         <select onChange={onChange("category")} className="form-control">
-          <option value="5e5a12d179979f3f5bb5413e">Python</option>
+        <option value="5e5a12d179979f3f5bb5413e">Python</option>
+        <option value="5e5a12d179979f3f5bb5413e">PHP</option>
         </select>
       </div>
 
