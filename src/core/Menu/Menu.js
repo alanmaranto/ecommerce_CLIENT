@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { signout } from "../../api";
+import { signout, isAuthenticated } from "../../api";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) {
@@ -19,37 +19,43 @@ const Menu = ({ history }) => {
             Dashboard
           </Link>
         </li>
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            style={isActive(history, "/signin")}
-            to="/signin"
-          >
-            SignIn
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link
-            className="nav-link"
-            style={isActive(history, "/signup")}
-            to="/signup"
-          >
-            SignUp
-          </Link>
-        </li>
-        <li className="nav-item">
-          <span
-            className="nav-link"
-            style={{ cursor: "pointer", color: "#ffffff" }}
-            onClick={() =>
-              signout(() => {
-                history.push("/signin");
-              })
-            }
-          >
-            Signout
-          </span>
-        </li>
+        {!isAuthenticated() && (
+          <Fragment>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                style={isActive(history, "/signin")}
+                to="/signin"
+              >
+                SignIn
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                style={isActive(history, "/signup")}
+                to="/signup"
+              >
+                SignUp
+              </Link>
+            </li>
+          </Fragment>
+        )}
+        {isAuthenticated() && (
+          <li className="nav-item">
+            <span
+              className="nav-link"
+              style={{ cursor: "pointer", color: "#ffffff" }}
+              onClick={() =>
+                signout(() => {
+                  history.push("/signin");
+                })
+              }
+            >
+              Signout
+            </span>
+          </li>
+        )}
       </ul>
     </div>
   );
