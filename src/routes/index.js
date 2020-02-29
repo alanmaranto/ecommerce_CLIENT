@@ -3,11 +3,12 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import SignUp from "../components/user/Signup";
 import SignIn from "../components/user/Signin";
 import Dashboard from "../view/Dashboard/Dashboard";
-import PrivateRoute from './PrivateRoute';
-import AdminRoute from './AdminRoute';
-import UserDashboard from '../components/user/UserDashboard/UserDashboard';
-import AdminDashboard from '../components/user/AdminDashboard/AdminDashboard';
-import AddCategory from '../components/admin/Category/AddCategory';
+import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
+import UserDashboard from "../components/user/UserDashboard/UserDashboard";
+import AdminDashboard from "../components/user/AdminDashboard/AdminDashboard";
+import AddCategory from "../components/admin/Category/AddCategory";
+import AddProduct from "../components/admin/Product/AddProduct";
 
 const Routes = () => {
   return (
@@ -19,6 +20,7 @@ const Routes = () => {
         <PrivateRoute path="/user/dashboard" exact component={UserDashboard} />
         <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
         <AdminRoute path="/create/category" exact component={AddCategory} />
+        <AdminRoute path="/create/product" exact component={AddProduct} />
       </Switch>
     </BrowserRouter>
   );
