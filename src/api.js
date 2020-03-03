@@ -70,6 +70,17 @@ export const createCategory = (userId, token, category) => {
     });
 };
 
+export const fetchCategories = () => {
+  return fetch(`${host}/categories`, {
+    method: "GET",
+  })
+  .then(response => {
+    return response.json()
+  })
+  .catch(err => console.log(err));
+}
+
+
 // product
 
 export const createProduct = (userId, token, product) => {
@@ -89,8 +100,9 @@ export const createProduct = (userId, token, product) => {
     });
 };
 
-export const fetchCategories = () => {
-  return fetch(`${host}/categories`, {
+
+export const fetchProducts = (sortBy) => {
+  return fetch(`${host}/products?sortBy=${sortBy}&order=desc&limit=6`, {
     method: "GET",
   })
   .then(response => {
