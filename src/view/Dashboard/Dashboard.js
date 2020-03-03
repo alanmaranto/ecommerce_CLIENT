@@ -35,7 +35,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Layout title="Dashboard" description=" Node React E-Commerce" className="container">
+    <Layout title="Dashboard" description=" Node React E-Commerce" className="container-fluid">
       <h2 className="mb-4">New Arrivals</h2>
       <div className="row">
         {productsByArrival.map((product, index) => (
