@@ -1,5 +1,6 @@
 import React from "react";
 import { host } from "../../api";
+
 const ProductsImages = ({ item, url }) => {
   return (
     <div className="product-img">
