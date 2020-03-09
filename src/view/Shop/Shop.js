@@ -4,6 +4,9 @@ import { fetchCategories } from "../../api";
 import Checkbox from "./Checkbox";
 
 const Shop = () => {
+  const [myFilters, setMyFilters] = useState({
+    filters: { category: [], price: [] }
+  });
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
 
@@ -23,7 +26,10 @@ const Shop = () => {
   }, []);
 
   const onFilters = (filters, filterBy) => {
-    console.log('Shop',filters, filterBy);
+    // console.log("Shop", filters, filterBy);
+    const newFilters = { ...myFilters };
+    newFilters.filters[filterBy] = filters
+    setMyFilters(newFilters)
   };
 
   return (
@@ -42,7 +48,9 @@ const Shop = () => {
             />
           </ul>
         </div>
-        <div className="col-8">right</div>
+        <div className="col-8">
+          {JSON.stringify(myFilters)}
+        </div>
       </div>
     </Layout>
   );
