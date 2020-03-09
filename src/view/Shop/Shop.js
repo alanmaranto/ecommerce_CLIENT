@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../core/Layout/Layout";
-import { fetchCategories } from "../../api";
+import { fetchCategories, getFilteredProducts } from "../../api";
 import Checkbox from "./Checkbox";
 import Radiobox from './RadioBox';
 import { prices } from '../../constants/Shop/FixedPrices';
@@ -11,6 +11,9 @@ const Shop = () => {
   });
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
+  const [limit, setLimit] = useState(6); // Limit the request to 6
+  const [skip, setSkip] = useState(0);
+  const [filteredResults, setFilteredResults] = useState(0);
 
   // load categories
   const init = () => {
@@ -23,8 +26,21 @@ const Shop = () => {
     });
   };
 
+  const loadFilteredResults = newFilters => {
+    // console.log(newFilters)
+    getFilteredProducts(skip, limit, newFilters).then(data => {
+      if (data.error) {
+        setError(data.error)
+      } else {
+        setFilteredResults(data)
+      }
+    })
+  }
+
+
   useEffect(() => {
     init();
+    loadFilteredResults(skip, limit, myFilters.filters)
   }, []);
 
   const onFilters = (filters, filterBy) => {
@@ -36,7 +52,7 @@ const Shop = () => {
       let priceValues = onPrice(filters)
       newFilters.filters[filterBy] = priceValues;
     }
-
+    loadFilteredResults(myFilters.filters)
     setMyFilters(newFilters)
   };
 
@@ -77,7 +93,7 @@ const Shop = () => {
           </div>
         </div>
         <div className="col-8">
-          {JSON.stringify(myFilters)}
+          {JSON.stringify(filteredResults)}
         </div>
       </div>
     </Layout>
