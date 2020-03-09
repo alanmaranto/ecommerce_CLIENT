@@ -30,9 +30,28 @@ const Shop = () => {
   const onFilters = (filters, filterBy) => {
     // console.log("Shop", filters, filterBy);
     const newFilters = { ...myFilters };
-    newFilters.filters[filterBy] = filters
+    newFilters.filters[filterBy] = filters;
+
+    if (filterBy == "price") {
+      let priceValues = onPrice(filters)
+      newFilters.filters[filterBy] = priceValues;
+    }
+
     setMyFilters(newFilters)
   };
+
+  const onPrice = value => {
+    const data = prices
+    let array = []
+
+    for (let key in data) {
+      if (data[key]._id === parseInt(value)) {
+        array = data[key].array
+      }
+    }
+
+    return array
+  }
 
   return (
     <Layout
