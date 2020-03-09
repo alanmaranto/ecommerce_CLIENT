@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../../core/Layout/Layout";
 import { fetchCategories } from "../../api";
 import Checkbox from "./Checkbox";
+import Radiobox from './RadioBox';
 import { prices } from '../../constants/Shop/FixedPrices';
 
 const Shop = () => {
@@ -44,11 +45,17 @@ const Shop = () => {
           <h4>Filter by categories</h4>
           <ul>
             <Checkbox
-              
               categories={categories}
               onFilters={filters => onFilters(filters, "category")}
             />
           </ul>
+          <h4>Filter by price range</h4>
+          <div>
+            <Radiobox
+              prices={prices}
+              onFilters={filters => onFilters(filters, "price")}
+            />
+          </div>
         </div>
         <div className="col-8">
           {JSON.stringify(myFilters)}
