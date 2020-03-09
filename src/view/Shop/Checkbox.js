@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Checkbox = ({ categories }) => {
+const Checkbox = ({ categories, onFilters }) => {
   const [checked, setChecked] = useState([]);
 
   // Return categorie and return another function
@@ -15,8 +15,9 @@ const Checkbox = ({ categories }) => {
     } else {
       newCheckedCategoryId.splice(currentCategoryId, 1);
     }
-    console.log(newCheckedCategoryId);
+    // console.log(newCheckedCategoryId);
     setChecked(newCheckedCategoryId);
+    onFilters(newCheckedCategoryId)
   };
   return categories.map((category, index) => (
     <li key={index} className="list-unstyled">
