@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../core/Layout/Layout";
 import { fetchCategories, getFilteredProducts } from "../../api";
+
+import ProductCard from '../Dashboard/Product'
 import Checkbox from "./Checkbox";
 import Radiobox from './RadioBox';
 import { prices } from '../../constants/Shop/FixedPrices';
@@ -13,7 +15,7 @@ const Shop = () => {
   const [error, setError] = useState(false);
   const [limit, setLimit] = useState(6); // Limit the request to 6
   const [skip, setSkip] = useState(0);
-  const [filteredResults, setFilteredResults] = useState(0);
+  const [filteredResults, setFilteredResults] = useState([]);
 
   // load categories
   const init = () => {
@@ -32,7 +34,7 @@ const Shop = () => {
       if (data.error) {
         setError(data.error)
       } else {
-        setFilteredResults(data)
+        setFilteredResults(data.data)
       }
     })
   }
@@ -93,7 +95,12 @@ const Shop = () => {
           </div>
         </div>
         <div className="col-8">
-          {JSON.stringify(filteredResults)}
+          <h2 className="mb-4">Products</h2>
+          <div className="row">
+             {filteredResults.map((product, index) => (
+                <ProductCard key={index} product={product} />
+            ))}
+          </div>
         </div>
       </div>
     </Layout>

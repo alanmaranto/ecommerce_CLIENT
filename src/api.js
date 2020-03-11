@@ -117,7 +117,7 @@ export const getFilteredProducts = (skip, limit, filters = {}) => {
     skip,
     filters
   };
-  return fetch(`${host}/products/by/search/`, {
+  return fetch(`${host}/products/by/search`, {
     method: "POST",
     headers: {
       Accept: "application/json",
