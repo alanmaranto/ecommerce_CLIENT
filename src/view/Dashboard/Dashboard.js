@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../core/Layout/Layout";
-
+import Search from '../../core/Search/Search';
 import ProductCard from "./Product";
 import { fetchProducts } from "../../api";
 
@@ -36,6 +36,7 @@ const Dashboard = () => {
 
   return (
     <Layout title="Dashboard" description=" Node React E-Commerce" className="container-fluid">
+      <Search />
       <h2 className="mb-4">New Arrivals</h2>
       <div className="row">
         {productsByArrival.map((product, index) => (
