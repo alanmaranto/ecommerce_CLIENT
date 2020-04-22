@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // import ProductCard from "./Product";
+import SearchForm from "./SearchForm";
 import { fetchCategories } from "../../api";
 
 const initialState = {
@@ -14,13 +15,12 @@ const initialState = {
 const Search = () => {
   const [data, setData] = useState(initialState);
 
-  const { categories, category, search, results, searched } = data
+  const { categories, category, search, results, searched } = data;
 
   const getCategories = async () => {
     try {
       const categories = await fetchCategories();
-      console.log(categories);
-      setData({ categories: categories });
+      setData({ categories });
     } catch (error) {
       throw new Error("Error fetching");
     }
@@ -29,9 +29,20 @@ const Search = () => {
   useEffect(() => {
     getCategories();
   }, []);
+
+  const searchSubmit = () => {};
+
+  const onChange = () => {};
+
   return (
-    <div>
-      <h2>Search Bar {JSON.stringify(categories)}</h2>
+    <div className="row">
+      <div className="container mb-3">
+        <SearchForm
+          categories={categories}
+          searchSubmit={searchSubmit}
+          onChange={onChange}
+        />
+      </div>
     </div>
   );
 };
