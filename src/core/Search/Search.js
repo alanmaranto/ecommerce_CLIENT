@@ -59,6 +59,7 @@ const SearchContainer = () => {
       searchSubmit={searchSubmit}
       onChange={onChange}
       results={results}
+      searched={searched}
     />
   );
 };
