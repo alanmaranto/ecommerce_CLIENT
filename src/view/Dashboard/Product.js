@@ -8,7 +8,7 @@ const Card = ({ product }) => {
       <div className="card">
         <div className="card-header">{product.name}</div>
         <div className="card-body">
-            <ProductsImages item={product} url="product" />
+          <ProductsImages item={product} url="product" />
           <p>{product.description.substring(0, 100)}</p>
           <p>{product.price}</p>
           <Link to="/">
@@ -17,8 +17,8 @@ const Card = ({ product }) => {
             </button>
           </Link>
           <button className="btn btn-outline-warning mt-2 mb-2">
-              Add Product to card
-            </button>
+            Add Product to card
+          </button>
         </div>
       </div>
     </div>
