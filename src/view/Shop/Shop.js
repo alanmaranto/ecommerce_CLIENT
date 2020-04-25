@@ -125,10 +125,12 @@ const Shop = () => {
           <h2 className="mb-4">Products</h2>
           <div className="row">
             {filteredResults.map((product, index) => (
-              <ProductCard key={index} product={product} />
+              <div className="col-4 mb-3" key={index}>
+                <ProductCard product={product}></ProductCard>
+              </div>
             ))}
           </div>
-          <hr/>
+          <hr />
           {loadMoreButton()}
         </div>
       </div>
