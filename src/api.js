@@ -143,3 +143,13 @@ export const listProductsByQueryParams = (params) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const fetchProduct = (productId) => {
+  return fetch(`${host}/product/${productId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
