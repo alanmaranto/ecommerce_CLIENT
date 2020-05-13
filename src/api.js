@@ -153,3 +153,13 @@ export const fetchProduct = (productId) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const listProductRelated = (productId) => {
+  return fetch(`${host}/products/related/${productId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
