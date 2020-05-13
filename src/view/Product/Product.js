@@ -48,9 +48,6 @@ const Product = (props) => {
             </div>
           ) )}
         </div>
-        {product && product.description && (
-          <ProductCard product={product} showViewProductButton={false} />
-        )}
       </div>
     </Layout>
   );
