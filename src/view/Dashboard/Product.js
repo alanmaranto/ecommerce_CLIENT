@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import moment from "moment";
 import ProductsImages from "./ProductImages";
-import { addItem, updateItem } from "../../helpers/cart";
+import { addItem, updateItem, removeItem } from "../../helpers/cart";
 
 const Card = ({
   product,
   showViewProductButton = true,
   showAddToCartButton = true,
   cartUpdate = false,
+  showRemoveProductButton = false,
 }) => {
   const [redirect, setRedirect] = useState(false);
   const [count, setCount] = useState(product.count);
@@ -61,7 +62,7 @@ const Card = ({
   const onChange = (productId) => (e) => {
     setCount(e.target.value < 1 ? 1 : e.target.value);
     if (e.target.value >= 1) {
-      updateItem(productId, e.target.value)
+      updateItem(productId, e.target.value);
     }
   };
 
@@ -85,6 +86,16 @@ const Card = ({
     );
   };
 
+  const showRemoveButton = (showRemoveProductButton) => {
+    return (
+      showRemoveProductButton && (
+        <button onClick={() => removeItem(product._id)} className="btn btn-outline-danger mt-2 mb-2">
+          Remove Product
+        </button>
+      )
+    );
+  };
+
   return (
     <div className="card">
       <div className="card-header name">{product.name}</div>
@@ -103,6 +114,7 @@ const Card = ({
         <br />
         {showViewButton(showViewProductButton)}
         {showAddToCart(showAddToCartButton)}
+        {showRemoveButton(showRemoveProductButton)}
         {showCartUpdateOptions(cartUpdate)}
       </div>
     </div>
