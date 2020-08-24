@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../../helpers/authenticate";
 import { emptyCart } from "../../helpers/cart";
-import { getBraintreeClientToken, processPayment } from "../../api";
+import {
+  getBraintreeClientToken,
+  processPayment,
+  createOrder,
+} from "../../api";
 import DropIn from "braintree-web-drop-in-react";
 
 const Checkout = ({ products, run, setRun }) => {
@@ -48,19 +52,28 @@ const Checkout = ({ products, run, setRun }) => {
     );
   };
 
+  const handleAddress = (e) => {
+    setData({ ...data, address: e.target.value });
+  };
+
+  let deliveryAddress = data.address;
+
   const buy = () => {
-    setData({ loading: true })
-    // send the nonce yo server
+    setData({ loading: true });
+    // send the nonce to server
     // nonce = data.instance.requestPaymentMethod()
+
     let nonce;
     let getNonce = data.instance
+
       .requestPaymentMethod()
       .then((data) => {
-        // console.log(data);
         nonce = data.nonce;
+
         // once you have nonce (card type, card number) send nonce as 'paymentMethodNonce'
         // and also total to be charged
         // console.log("nonce", nonce, getTotal(products));
+
         const paymentData = {
           paymentMethodNonce: nonce,
           amount: getTotal(products),
@@ -68,8 +81,22 @@ const Checkout = ({ products, run, setRun }) => {
 
         processPayment(userId, token, paymentData)
           .then((response) => {
-            console.log(response);
+
+            // create order
+
+            const createOrderData = {
+              products,
+              transaction_id: response.transaction.id,
+              amount: response.transaction.amount,
+              address: deliveryAddress,
+            };
+
+            createOrder(userId, token, createOrderData);
+
             setData({ ...data, success: response.success });
+
+            //empty cart
+
             emptyCart(() => {
               setRun(!run);
               console.log("payment success and empty cart");
@@ -78,16 +105,13 @@ const Checkout = ({ products, run, setRun }) => {
                 success: true,
               });
             });
-            //empty cart
-            // create order
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
-            setData({ loading: false})
-          })
+            setData({ loading: false });
+          });
       })
       .catch((error) => {
-        // console.log("dropin error", error);
         setData({ ...data, error: error.message });
       });
   };
@@ -96,12 +120,23 @@ const Checkout = ({ products, run, setRun }) => {
     <div onBlur={() => setData({ ...data, error: "" })}>
       {data.clientToken !== null && products.length > 0 ? (
         <div>
+          <div className="form-group mb-3">
+            <label htmlFor="" className="text-muted">
+              Delivery address:
+            </label>
+            <textarea
+              onChange={handleAddress}
+              className="form-control"
+              value={data.address}
+              placeholder="Type your delivery address here"
+            />
+          </div>
           <DropIn
             options={{
               authorization: data.clientToken,
               paypal: {
-                flow: "vault"
-              }
+                flow: "vault",
+              },
             }}
             onInstance={(instance) => (data.instance = instance)}
           />
@@ -131,7 +166,7 @@ const Checkout = ({ products, run, setRun }) => {
     </div>
   );
 
-  const showLoading = (loading) => loading && <h2>Loading...</h2>
+  const showLoading = (loading) => loading && <h2>Loading...</h2>;
 
   return (
     <div>
