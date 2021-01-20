@@ -35,6 +35,34 @@ const Orders = () => {
     }
   };
 
+  const showInput = (key, value) => {
+    return (
+      <div className="input-group mb-2 mr-sm 2">
+        <div className="input-group-prepend">
+          <div className="input-group-text">{key}</div>
+          <input type="text" className="form-control" readOnly value={value} />
+        </div>
+      </div>
+    );
+  };
+
+  const renderProducts = (products) => {
+    return products.map((product, index) => {
+      return (
+        <div
+          className="mb-4"
+          key={`${product._id}-${index}`}
+          style={{ padding: 20, border: "1px solid indigo" }}
+        >
+          {showInput("Product name", product.name)}
+          {showInput("Product price", product.price)}
+          {showInput("Product total", product.total)}
+          {showInput("Product id", product._id)}
+        </div>
+      );
+    });
+  };
+
   const renderOrders = (orders) => {
     return orders.map((order, index) => {
       return (
@@ -65,6 +93,7 @@ const Orders = () => {
           <h3 className="mt-4 mb-4 font-italic">
             Total products in the order: {order.products.length}
           </h3>
+          {renderProducts(order.products)}
         </div>
       );
     });
