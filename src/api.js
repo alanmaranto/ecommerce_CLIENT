@@ -195,6 +195,8 @@ export const processPayment = (userId, token, payment) => {
     .catch((err) => console.log(err));
 };
 
+// Order
+
 export const createOrder = (userId, token, createOrderData) => {
   return fetch(`${host}/order/create/${userId}`, {
     method: "POST",
@@ -203,10 +205,26 @@ export const createOrder = (userId, token, createOrderData) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ order: createOrderData} ),
+    body: JSON.stringify({ order: createOrderData }),
   })
     .then((response) => {
       return response.json();
     })
     .catch((err) => console.log(err));
+};
+
+export const fetchAdminOrders = async (userId, token) => {
+  try {
+    const response = await fetch(`${host}/order/list/${userId}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    const orders = await response.json();
+    return orders;
+  } catch (error) {
+    return error;
+  }
 };
