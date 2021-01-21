@@ -228,3 +228,19 @@ export const fetchAdminOrders = async (userId, token) => {
     return error;
   }
 };
+
+export const getStatusValues = async (userId, token) => {
+  try {
+    const response = await fetch(`${host}/order/status-values/${userId}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    const orders = await response.json();
+    return orders;
+  } catch (error) {
+    return error;
+  }
+};

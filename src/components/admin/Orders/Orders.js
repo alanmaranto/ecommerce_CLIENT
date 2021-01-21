@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import Layout from "../../../core/Layout/Layout";
 import { isAuthenticated } from "../../../helpers/authenticate";
 import { Link } from "react-router-dom";
-import { fetchAdminOrders } from "../../../api";
+import { fetchAdminOrders, getStatusValues } from "../../../api";
 import moment from "moment";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const [statusValues, setStatusValues] = useState([]);
 
   const { user, token } = isAuthenticated();
 
@@ -21,8 +22,20 @@ const Orders = () => {
     }
   };
 
+  const loadStatusValues = async () => {
+    try {
+      const response = await getStatusValues(user._id, token);
+      if (response) {
+        setStatusValues(response.body);
+      }
+    } catch (error) {
+      return error;
+    }
+  };
+
   useEffect(() => {
     loadOrders();
+    loadStatusValues();
   }, []);
 
   const showOrdersLength = (orders) => {
@@ -76,7 +89,7 @@ const Orders = () => {
           </h2>
 
           <ul className="list-group mb-2">
-            <li className="list-group-item">Status: {order.status}</li>
+            <li className="list-group-item">{showStatus(order)}</li>
             <li className="list-group-item">
               Transaction ID: {order.transaction_id}
             </li>
@@ -97,6 +110,29 @@ const Orders = () => {
         </div>
       );
     });
+  };
+
+  const handleStatusValues = (event, orderId) => {
+    // ypdate status value
+  };
+
+  const showStatus = (order) => {
+    return (
+      <div className="form-group">
+        <h3 className="mark mb-4">Status: {order.status}</h3>
+        <select
+          className="form-control"
+          onChange={(e) => handleStatusValues(e, order._id)}
+        >
+          <option value="">Update Status</option>
+          {statusValues.map((status, index) => (
+            <option value={status} key={`${status}-${index}`}>
+              {status}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
   };
 
   return (
